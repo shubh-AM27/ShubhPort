@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio | Shubham Kumar Singh</title>
+  <style>
+    :root{
+      --bg-deep: #041914;       /* deep forest night */
+      --bg-mid:  #073226;       /* softer mid tone */
+      --card:    rgba(10,30,20,0.75);
+      --muted:   #cfe6d8;
+      --accent:  #7fdc6b;       /* mossy green accent */
+      --firefly: #ffd76b;       /* warm firefly glow */
+      --container:1100px;
+    }
+
+    /* Reset & base */
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0}
+    body{
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--muted);
+      background: radial-gradient(1200px 600px at 20% 20%, rgba(10,30,20,0.32), transparent 25%),
+                  linear-gradient(180deg, var(--bg-deep), #031412 60%);
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* faint mist over the forest for depth */
+    .bg-mist{
+      position:fixed; inset:0; z-index:-20; pointer-events:none;
+      background:
+        radial-gradient(900px 400px at 75% 25%, rgba(8,50,40,0.12), transparent 30%),
+        radial-gradient(700px 400px at 25% 75%, rgba(30,60,45,0.08), transparent 35%);
+      filter: blur(28px);
+      opacity:0.95;
+    }
+
+    /* Fireflies container */
+    .fireflies{
+      position:fixed; inset:0; z-index:-10; pointer-events:none;
+      overflow:hidden;
+    }
+    .firefly{
+      position:absolute;
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #ffffff 0 12%, rgba(255,255,255,0.8) 15%, rgba(255,215,120,0.6) 45%, rgba(255,210,90,0.18) 60%, transparent 70%);
+      box-shadow: 0 0 10px rgba(255,215,120,0.14), 0 0 20px rgba(127,220,107,0.06);
+      opacity:0.0;
+      transform: translate3d(0,0,0) scale(0.8);
+      will-change: transform, opacity;
+      filter: drop-shadow(0 0 6px rgba(255,210,90,0.16));
+      mix-blend-mode: screen;
+      animation-name: fireflyFloat;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+      border: 1px solid rgba(255,230,160,0.06);
+      backdrop-filter: blur(0.2px);
+    }
+
+    /* float + twinkle animation */
+    @keyframes fireflyFloat {
+      0% {
+        transform: translate3d(0,0,0) scale(0.7);
+        opacity: 0.12;
+        filter: drop-shadow(0 0 6px rgba(255,210,90,0.06));
+      }
+      25% {
+        transform: translate3d(8px,-10px,0) scale(1.05);
+        opacity: 0.9;
+        filter: drop-shadow(0 0 16px rgba(255,220,110,0.22));
+      }
+      50% {
+        transform: translate3d(-6px,8px,0) scale(0.92);
+        opacity: 0.35;
+        filter: drop-shadow(0 0 10px rgba(255,200,90,0.12));
+      }
+      75% {
+        transform: translate3d(10px,6px,0) scale(1.08);
+        opacity: 0.95;
+        filter: drop-shadow(0 0 18px rgba(255,230,120,0.26));
+      }
+      100% {
+        transform: translate3d(0,0,0) scale(0.75);
+        opacity: 0.18;
+        filter: drop-shadow(0 0 6px rgba(255,210,90,0.06));
+      }
+    }
+
+    /* subtle slow parallax wave for leaves/sky */
+    .bg-wave{
+      position:fixed; inset:0; z-index:-18; pointer-events:none;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.08));
+      opacity:0.6;
+      transform-origin:center;
+      animation: waveShift 28s ease-in-out infinite;
+      filter: blur(6px);
+    }
+    @keyframes waveShift {
+      0% { transform: translateY(0) scale(1); opacity:0.6 }
+      50% { transform: translateY(-2.2%) scale(1.02); opacity:0.85 }
+      100% { transform: translateY(0) scale(1); opacity:0.6 }
+    }
+
+    /* container */
+    .container{ max-width:var(--container); margin:0 auto; padding:0 22px; }
+
+    /* header */
+    header{
+      position:sticky; top:0; z-index:40;
+      background: linear-gradient(180deg, rgba(3,10,8,0.28), rgba(3,10,8,0.12));
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px);
+    }
+    .header-inner{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    .logo{ font-weight:800; letter-spacing:0.6px; color:var(--muted) }
+    .logo span{ color:var(--accent) }
+
+    nav.nav{ display:flex; gap:16px; align-items:center; }
+    nav.nav a{
+      color: rgba(215,235,226,0.9);
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius:8px;
+      font-weight:600;
+      font-size:0.95rem;
+    }
+    nav.nav a:hover{ background: rgba(127,220,107,0.06); color: #fff; }
+
+    .nav-toggle{ display:none; background:transparent; border:1px solid rgba(255,255,255,0.03); padding:8px 10px; border-radius:8px; color:var(--muted) }
+
+    /* hero */
+    .hero{ padding:80px 0 110px; min-height:72vh; display:flex; align-items:center; }
+    .hero-inner{ display:flex; gap:48px; align-items:flex-start; justify-content:space-between; }
+    .eyebrow{ color:var(--accent); font-weight:700; margin:0 0 8px }
+    h1{ font-size:2.5rem; margin:0 0 12px; color:#e9f6ee }
+    .accent{ color:var(--accent) }
+
+    .hero-text{ color: rgba(190,220,210,0.95); max-width:60ch; margin-bottom:14px }
+    .hero-actions{ display:flex; gap:12px; margin-top:8px }
+
+    .btn{
+      display:inline-block; padding:10px 16px; border-radius:10px; text-decoration:none; font-weight:700;
+      border:1px solid rgba(255,255,255,0.03);
+      color: #071a14; background: linear-gradient(180deg, var(--accent), #68b94f);
+      box-shadow: 0 6px 22px rgba(8,20,12,0.4);
+    }
+    .btn.ghost{
+      background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.03)
+    }
+
+    .hero-card{
+      min-width:300px; max-width:360px;
+      background: linear-gradient(180deg, rgba(6,18,16,0.68), rgba(6,18,16,0.56));
+      border: 1px solid rgba(255,255,255,0.03);
+      padding:18px; border-radius:14px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      color: var(--muted);
+    }
+    .hero-card h2{ margin:8px 0 10px; color:#eaf9ee }
+
+    /* sections */
+    .section{ padding:56px 0; border-top:1px solid rgba(255,255,255,0.02) }
+    .section-title{ font-size:1.25rem; margin:0 0 8px; color:#eaf9ee }
+    .section-intro{ color: rgba(190,220,210,0.9); margin:0 0 18px; max-width:72ch }
+
+    .grid{ display:grid; gap:18px }
+    .grid.two{ grid-template-columns: repeat(2, minmax(0,1fr)) }
+    .grid.three{ grid-template-columns: repeat(3, minmax(0,1fr)) }
+
+    .card{
+      background: linear-gradient(180deg, rgba(6,18,14,0.56), rgba(4,14,12,0.46));
+      border:1px solid rgba(255,255,255,0.02);
+      padding:16px; border-radius:12px;
+      color: rgba(200,230,215,0.95);
+      min-height:120px;
+    }
+    .list{ margin:0; padding-left:18px; color: rgba(190,220,210,0.9) }
+    .tag-list, .pill-list{ list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px }
+    .tag-list li, .pill-list li{
+      background: rgba(127,220,107,0.08);
+      padding:6px 10px; border-radius:999px; color: var(--accent); font-weight:700; font-size:0.86rem;
+      border: 1px solid rgba(127,220,107,0.06);
+    }
+
+    /* contact */
+    .contact-inner{ display:flex; gap:28px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap }
+    .contact-card{ min-width:300px; max-width:420px; padding:16px; border-radius:12px;
+      background: linear-gradient(180deg, rgba(6,18,16,0.6), rgba(4,12,10,0.45));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .contact-email{ color:var(--firefly); text-decoration:none; font-weight:800; display:inline-block; margin:8px 0 }
+
+    /* footer */
+    .site-footer{ padding:18px 0; border-top:1px solid rgba(255,255,255,0.02); color: rgba(180,220,200,0.8); text-align:center; }
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero-inner{ flex-direction:column; align-items:stretch }
+      nav.nav{ display:none }
+      .nav-toggle{ display:flex }
+      .grid.two, .grid.three{ grid-template-columns: 1fr }
+      .hero{ padding:48px 0 72px }
+    }
+
+    /* mobile nav style injected */
+    .nav-mobile{
+      position:fixed; right:16px; top:64px; background: rgba(3,10,8,0.86);
+      border:1px solid rgba(127,220,107,0.06); padding:12px; border-radius:12px;
+      display:flex; flex-direction:column; gap:8px; z-index:80;
+    }
+    .nav-mobile a{ color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:8px }
+    .nav-mobile a:hover{ color:#fff; background: rgba(127,220,107,0.04) }
+
+    /* small helpers */
+    .spacer{ height:28px }
+  </style>
+</head>
+<body>
+
+  <!-- visual depth layers -->
+  <div class="bg-mist" aria-hidden="true"></div>
+  <div class="bg-wave" aria-hidden="true"></div>
+
+  <!-- Fireflies holder; JS will populate several .firefly spans -->
+  <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">SKS<span>.</span></div>
+
+      <nav class="nav" id="nav">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span style="font-size:16px; color:var(--muted)">☰</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section id="home" class="section hero">
+      <div class="container hero-inner">
+        <div>
+          <p class="eyebrow">WebDev and Full Stack Enthusiast</p>
+          <h1>Hey, I'm <span class="accent">Shubham Kumar Singh</span>.</h1>
+          <p class="hero-text">
+            I automate deployments using IaC and CI/CD, containerize applications, and build in monitoring, logging, and rollback paths — keeping web systems simple to manage, efficient to develop on, and resilient in production.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn">View Projects</a>
+            <a href="#contact" class="btn ghost" style="background:transparent; color:var(--muted)">Get in Touch</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <p class="hero-label" style="color:rgba(200,230,215,0.9); margin:0 0 6px">Current focus</p>
+          <h2 style="margin:0 0 6px; color:#eaf9ee">JS (ES6+) • Express.js • MongoDB • CI/CD</h2>
+          <p style="color: rgba(190,220,210,0.9); margin:0;">
+            Learning by shipping real projects and keeping infra as simple as possible.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <p class="section-intro">
+          I'm a self-taught web developer focused on building practical, user-friendly websites and web apps. I enjoy turning messy or unoptimized codebases into clean, maintainable projects using modern tools, automation, and good documentation.
+        </p>
+
+        <div class="grid two">
+          <div class="card">
+            <h3>What I enjoy</h3>
+            <ul class="list">
+              <li>Creating simple, maintainable frontend and backend architectures</li>
+              <li>Automating builds, testing, and deployment with CI/CD</li>
+              <li>Optimizing web performance and improving code quality</li>
+              <li>Learning by experimenting, debugging, and refining my work</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Currently exploring</h3>
+            <ul class="list">
+              <li>React • Next.js</li>
+              <li>Node.js & Express</li>
+              <li>MongoDB & relational databases</li>
+              <li>CI/CD automation</li>
+              <li>Performance monitoring & debugging tools</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills" class="section">
+      <div class="container">
+        <h2 class="section-title">Skills & Tools</h2>
+        <div class="grid three">
+          <div class="card">
+            <h3>Backend</h3>
+            <ul class="tag-list">
+              <li>Node.js</li>
+              <li>Express.js</li>
+              <li>Rest APIs and JSON</li>
+              <li>Next.js API routes</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>DevOps</h3>
+            <ul class="tag-list">
+              <li>Linux</li>
+              <li>Shell scripting</li>
+              <li>Docker</li>
+              <li>CI/CD basics</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Programming</h3>
+            <ul class="tag-list">
+              <li>Java</li>
+              <li>Python</li>
+              <li>Git & GitHub</li>
+              <li>HTML / CSS / JS</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-intro">
+          A few projects I use to learn cloud and DevOps. Most are simple, reproducible, and cost-conscious.
+        </p>
+
+        <div class="grid three">
+          <article class="card project-card">
+            <h3>Portfolio on S3 + CloudFront</h3>
+            <p style="color:rgba(190,220,210,0.9);">
+              Static portfolio site hosted on S3 with CloudFront CDN and Route 53 for a custom domain.
+            </p>
+            <ul class="pill-list">
+              <li>AWS S3</li>
+              <li>CloudFront</li>
+              <li>Route 53</li>
+            </ul>
+            <div style="margin-top:10px">
+              <a href="#" style="color:var(--accent); text-decoration:none; font-weight:700; margin-right:10px">Live</a>
+              <a href="#" style="color:var(--accent); text-decoration:none; font-weight:700">Code</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <h3>Dockerized Web App</h3>
+            <p style="color:rgba(190,220,210,0.9);">Containerized a simple web app and ran it on an EC2 instance with a hardened Linux setup.</p>
+            <ul class="pill-list">
+              <li>Docker</li><li>EC2</li><li>Linux</li>
+            </ul>
+          </article>
+
+          <article class="card project-card">
+            <h3>CI/CD Demo Pipeline</h3>
+            <p style="color:rgba(190,220,210,0.9);">Simple pipeline that builds and deploys a static site to S3 on every push to the main branch.</p>
+            <ul class="pill-list">
+              <li>GitHub Actions</li><li>S3</li><li>Automation</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container contact-inner">
+        <div>
+          <h2 class="section-title">Contact</h2>
+          <p class="section-intro">Want to talk about a project, collaboration, or just nerd out about cloud and DevOps? Drop me a message.</p>
+        </div>
+        <div class="contact-card">
+          <p class="contact-label">Preferred channel</p>
+          <a href="shubhamsinghedu@gmail.com" class="contact-email">shubhamsinghedu@gmail.com</a>
+          <p class="contact-note">I usually reply within 24–48 hours.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Shubham Kumar Singh. All rights reserved.</p>
+      <p style="color:rgba(180,210,190,0.75)">Built with HTML, CSS, and a bit of JavaScript.</p>
+    </div>
+  </footer>
+
+  <script>
+    // SET YEAR
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // MOBILE NAV (simple)
+    (function(){
+      const toggle = document.getElementById('navToggle');
+      const navDesktop = document.getElementById('nav');
+      let mobile = null;
+      toggle.addEventListener('click', (e)=>{
+        if(!mobile){
+          mobile = document.createElement('div');
+          mobile.className = 'nav-mobile';
+          mobile.innerHTML = navDesktop.innerHTML;
+          document.body.appendChild(mobile);
+          // close when clicking link
+          mobile.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> { mobile.remove(); mobile=null; }));
+        } else {
+          mobile.remove(); mobile=null;
+        }
+      });
+
+      // close mobile nav on resize to desktop
+      window.addEventListener('resize', ()=> {
+        if(window.innerWidth > 980 && mobile){
+          mobile.remove(); mobile=null;
+        }
+      });
+    })();
+
+    // FIREPLIES CREATION (lightweight)
+    ;(function createFireflies(){
+      const holder = document.getElementById('fireflies');
+      const COUNT = 22; // number of fireflies
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      // helper to random between min & max
+      function rnd(min, max){ return Math.random() * (max - min) + min; }
+
+      for(let i=0;i<COUNT;i++){
+        const f = document.createElement('span');
+        f.className = 'firefly';
+        // random starting position within viewport percentages
+        const left = Math.round(rnd(2, 96));
+        const top  = Math.round(rnd(4, 84));
+        f.style.left = left + '%';
+        f.style.top  = top + '%';
+
+        // variety in size
+        const size = Math.round(rnd(4, 10));
+        f.style.width = size + 'px';
+        f.style.height = size + 'px';
+        f.style.borderRadius = (size*2)+'px';
+
+        // animation duration & delay randomized for natural effect
+        const dur = rnd(3.6, 9.5).toFixed(2) + 's';
+        const delay = rnd(-6, 0).toFixed(2) + 's';
+        f.style.animationDuration = dur;
+        f.style.animationDelay = delay;
+
+        // subtle hue variation: a tiny green or warm tint by adjusting box-shadow
+        const hue = Math.random() > 0.6 ? 'rgba(127,220,107,0.16)' : 'rgba(255,220,110,0.18)';
+        f.style.boxShadow = `0 0 ${Math.round(rnd(6,18))}px ${hue}`;
+
+        holder.appendChild(f);
+      }
+
+      // re-create on resize for new layout (debounced)
+      let to = null;
+      window.addEventListener('resize', ()=> {
+        clearTimeout(to);
+        to = setTimeout(()=> {
+          // remove old
+          while(holder.firstChild) holder.removeChild(holder.firstChild);
+          // recreate (simple recusion)
+          createFireflies();
+        }, 180);
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
